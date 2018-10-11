@@ -1,22 +1,25 @@
 package c.jasonli6395.napatgame;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import c.jasonli6395.napatgame.GameObjects.Ball;
+import c.jasonli6395.napatgame.GameObjects.GameObject;
+import c.jasonli6395.napatgame.GameObjects.UserObjects.UserObjectHandler;
+import c.jasonli6395.napatgame.GameObjects.UserObjects.UserObjects;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
-    private Ball Ball;
+    private c.jasonli6395.napatgame.GameObjects.Ball Ball;
     private UserObjectHandler userObjectHandler;
     private UserObjects currentObject;
+    private UserObjects nextObject;
     private List<GameObject> placedObjects;
 
     public GameView(Context context) {
@@ -41,6 +44,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 currentObject.place();
                 placedObjects.add(currentObject);
                 currentObject = userObjectHandler.ObjectList.remove();
+                currentObject.set( Constants.INITIAL_CURRENT_X,Constants.INITIAL_CURRENT_Y);
+                nextObject = userObjectHandler.ObjectList.peek();
+                nextObject.set(Constants.INITIAL_NEXT_X,Constants.INITIAL_NEXT_Y);
 
                 break;
         }
@@ -52,6 +58,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         Ball = new Ball();
         currentObject = userObjectHandler.ObjectList.remove();
+        userObjectHandler.generateNextObject();
+        nextObject = userObjectHandler.ObjectList.peek();
+        nextObject.set(Constants.INITIAL_NEXT_X,Constants.INITIAL_NEXT_Y);
         thread.setRunning(true);
         thread.start();
     }
@@ -80,6 +89,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(currentObject!=null){
             currentObject.update();
         }
+        if(nextObject!=null){
+            nextObject.update();
+        }
         for (int i = 0; i<placedObjects.size();i++) {
             placedObjects.get(i).update();
         }
@@ -92,6 +104,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             Ball.draw(canvas);
             if(currentObject!=null){
                 currentObject.draw(canvas);
+            }
+            if(nextObject!=null){
+                nextObject.draw(canvas);
             }
             for (int i = 0; i<placedObjects.size();i++) {
                 placedObjects.get(i).draw(canvas);

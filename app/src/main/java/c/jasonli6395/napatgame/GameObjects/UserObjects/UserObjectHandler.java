@@ -1,15 +1,12 @@
-package c.jasonli6395.napatgame;
+package c.jasonli6395.napatgame.GameObjects.UserObjects;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+
+import c.jasonli6395.napatgame.GameObjects.UserObjects.Square;
+import c.jasonli6395.napatgame.GameObjects.UserObjects.Triangle;
+import c.jasonli6395.napatgame.GameObjects.UserObjects.UserObjects;
 
 public class UserObjectHandler {
     public Queue<UserObjects> ObjectList;

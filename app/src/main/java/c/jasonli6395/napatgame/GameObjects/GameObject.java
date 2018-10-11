@@ -1,4 +1,4 @@
-package c.jasonli6395.napatgame;
+package c.jasonli6395.napatgame.GameObjects;
 
 import android.graphics.Canvas;
 

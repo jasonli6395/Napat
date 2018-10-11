@@ -1,20 +1,17 @@
-package c.jasonli6395.napatgame;
+package c.jasonli6395.napatgame.GameObjects;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
-public class Ball implements  GameObject  {
+import c.jasonli6395.napatgame.Constants;
+
+public class Ball implements GameObject {
 
     private int radius;
     private Paint paint;
     private int x, y;
     private int xVel = 10, yVel = 5;
-    private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     public Ball() {
         paint = new Paint();
@@ -32,15 +29,15 @@ public class Ball implements  GameObject  {
     @Override
     public void update() {
         if (x < 0 && y < 0) {
-            x = screenWidth / 2;
-            y = screenHeight / 2;
+            x = Constants.SCREEN_WIDRTH/ 2;
+            y = Constants.SCREEN_HEIGHT / 2;
         } else {
             x += xVel;
             y += yVel;
-            if (x > screenWidth - radius* 2 || x < 0) {
+            if (x > Constants.SCREEN_WIDRTH - radius* 2 || x < 0) {
                 xVel = xVel * -1;
             }
-            if (y > screenHeight - radius * 2 || y < 0) {
+            if (y > Constants.SCREEN_HEIGHT - radius * 2 || y < 0) {
                 yVel = yVel * -1;
             }
         }
