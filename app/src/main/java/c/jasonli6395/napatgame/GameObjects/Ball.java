@@ -17,7 +17,7 @@ public class Ball implements GameObject {
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.RED);
-        radius = 32;
+        radius = Constants.BALL_RADIUS;
         x = 100;
         y = 100;
     }

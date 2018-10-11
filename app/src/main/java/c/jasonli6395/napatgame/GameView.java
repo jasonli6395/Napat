@@ -58,6 +58,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         Ball = new Ball();
         currentObject = userObjectHandler.ObjectList.remove();
+        currentObject.set(Constants.INITIAL_CURRENT_X,Constants.INITIAL_CURRENT_Y);
         userObjectHandler.generateNextObject();
         nextObject = userObjectHandler.ObjectList.peek();
         nextObject.set(Constants.INITIAL_NEXT_X,Constants.INITIAL_NEXT_Y);
