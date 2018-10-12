@@ -33,6 +33,11 @@ public class Triangle implements UserObjects {
     }
 
     @Override
+    public boolean CheckCollision(int x, int y, int radius) {
+        return false;
+    }
+
+    @Override
     public void draw(Canvas canvas) {
 
         int x1 = x - Constants.USEROBJECT_WIDTH / 2;

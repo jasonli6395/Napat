@@ -21,7 +21,15 @@ public class Ball implements GameObject {
         x = 100;
         y = 100;
     }
-
+    public int GetX(){
+        return x;
+    }
+    public int GetY(){
+        return y;
+    }
+    public int GetRadius(){
+        return radius;
+    }
     @Override
     public void draw(Canvas canvas) {
         canvas.drawCircle(x, y, radius, paint);
@@ -42,4 +50,5 @@ public class Ball implements GameObject {
             }
         }
     }
+
 }

@@ -1,11 +1,14 @@
 package c.jasonli6395.napatgame;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.support.constraint.Placeholder;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 
+import java.time.chrono.IsoEra;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +23,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private UserObjectHandler userObjectHandler;
     private UserObjects currentObject;
     private UserObjects nextObject;
-    private List<GameObject> placedObjects;
+    private List<UserObjects> placedObjects;
 
     public GameView(Context context) {
         super(context);
-        placedObjects = new ArrayList<GameObject>();
+        placedObjects = new ArrayList<UserObjects>();
         userObjectHandler = new UserObjectHandler();
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
@@ -37,16 +40,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                currentObject.set((int)event.getX(),(int)event.getY());
+                currentObject.set((int) event.getX(), (int) event.getY());
                 break;
             case MotionEvent.ACTION_UP:
                 userObjectHandler.generateNextObject();
                 currentObject.place();
                 placedObjects.add(currentObject);
                 currentObject = userObjectHandler.ObjectList.remove();
-                currentObject.set( Constants.INITIAL_CURRENT_X,Constants.INITIAL_CURRENT_Y);
+                currentObject.set(Constants.INITIAL_CURRENT_X, Constants.INITIAL_CURRENT_Y);
                 nextObject = userObjectHandler.ObjectList.peek();
-                nextObject.set(Constants.INITIAL_NEXT_X,Constants.INITIAL_NEXT_Y);
+                nextObject.set(Constants.INITIAL_NEXT_X, Constants.INITIAL_NEXT_Y);
 
                 break;
         }
@@ -58,10 +61,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         Ball = new Ball();
         currentObject = userObjectHandler.ObjectList.remove();
-        currentObject.set(Constants.INITIAL_CURRENT_X,Constants.INITIAL_CURRENT_Y);
+        currentObject.set(Constants.INITIAL_CURRENT_X, Constants.INITIAL_CURRENT_Y);
         userObjectHandler.generateNextObject();
         nextObject = userObjectHandler.ObjectList.peek();
-        nextObject.set(Constants.INITIAL_NEXT_X,Constants.INITIAL_NEXT_Y);
+        nextObject.set(Constants.INITIAL_NEXT_X, Constants.INITIAL_NEXT_Y);
         thread.setRunning(true);
         thread.start();
     }
@@ -87,14 +90,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         Ball.update();
-        if(currentObject!=null){
+        if (currentObject != null) {
             currentObject.update();
         }
-        if(nextObject!=null){
+        if (nextObject != null) {
             nextObject.update();
         }
-        for (int i = 0; i<placedObjects.size();i++) {
-            placedObjects.get(i).update();
+        for (int i = 0; i < placedObjects.size(); i++) {
+             UserObjects tempObj = placedObjects.get(i);
+             tempObj.update();
+             if(tempObj.CheckCollision(Ball.GetX(), Ball.GetY(),Ball.GetRadius())){
+                 placedObjects.remove((tempObj));
+             }
         }
     }
 
@@ -103,13 +110,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         if (canvas != null) {
             Ball.draw(canvas);
-            if(currentObject!=null){
+            if (currentObject != null) {
                 currentObject.draw(canvas);
             }
-            if(nextObject!=null){
+            if (nextObject != null) {
                 nextObject.draw(canvas);
             }
-            for (int i = 0; i<placedObjects.size();i++) {
+            for (int i = 0; i < placedObjects.size(); i++) {
                 placedObjects.get(i).draw(canvas);
             }
         }
